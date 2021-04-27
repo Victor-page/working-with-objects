@@ -67,7 +67,6 @@ const addMovieHandler = () => {
   };
 
   newMovie.info.title = title;
-  console.log(newMovie.info.title);
 
   movies.push(newMovie);
   renderMovies();
