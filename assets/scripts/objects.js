@@ -3,6 +3,18 @@ const searchBtn = document.getElementById('search-btn');
 
 const movies = [];
 
+const disableEnumerationOfProperties = (object, arrayOfProperties) => {
+  for (const propertyName of arrayOfProperties) {
+    Object.defineProperty(object, propertyName, {
+      configurable: true,
+      enumerable: false,
+      value: object[propertyName],
+      writable: true,
+    });
+  }
+  console.log(Object.getOwnPropertyDescriptors(object));
+};
+
 const renderMovies = (filter = '') => {
   const movieList = document.getElementById('movie-list');
 
@@ -27,10 +39,9 @@ const renderMovies = (filter = '') => {
     let { getFormattedTitle } = movie;
     // getFormattedTitle = getFormattedTitle.bind(movie);
     let text = getFormattedTitle.apply(movie) + ' - ';
+    disableEnumerationOfProperties(info, ['title', '_title']);
     for (const key in info) {
-      if (key !== 'title' && key !== '_title') {
-        text = text + `${key}: ${info[key]}`;
-      }
+      text = text + `${key}: ${info[key]}`;
     }
     movieEl.textContent = text;
     movieList.append(movieEl);
